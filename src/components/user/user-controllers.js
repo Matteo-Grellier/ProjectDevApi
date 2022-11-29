@@ -1,6 +1,7 @@
 import UserModel from '#components/user/user-model.js'
 import Joi from 'joi'
 import argon2, { hash } from 'argon2'
+import { sendWelcomeEmail } from '#services/mailing/welcome-email.js'
 
 export async function register (ctx) {
  try {
@@ -22,7 +23,9 @@ export async function register (ctx) {
   })
   newUser.generateEmailVerificationToken()
   const user = await newUser.save()
-  ctx.ok(user)
+  await sendWelcomeEmail(user, user.settings.validation_email_token)
+  const token = user.generateJWT()
+  ctx.ok({ token })
  } catch(e) {
   ctx.badRequest({ message: e.message })
  }
@@ -30,5 +33,5 @@ export async function register (ctx) {
 
 
 export async function login (ctx) {
-  
+
 }
