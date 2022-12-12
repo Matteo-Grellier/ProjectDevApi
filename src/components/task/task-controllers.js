@@ -14,9 +14,14 @@ export async function index (ctx) {
 export async function id (ctx) {
   try {
     if(!ctx.params.id) throw new Error('No id supplied')
-    const task = await TaskModel.findById(ctx.params.id)
-    if(!task) { return ctx.notFound() }
-    ctx.ok(task)
+
+    const task = await TaskModel.findOne({_id: ctx.params.id, user: ctx.state.user.id})
+    if(task) 
+    { 
+      ctx.ok(task)
+    } else {
+      ctx.status = 401
+    }
   } catch (e) {
     ctx.badRequest({ message: e.message })
   }
@@ -40,9 +45,12 @@ export async function create (ctx) {
       description: Joi.string(),
       list: Joi.string().required()
     })
-    const { error, value } = taskValidationSchema.validate(ctx.request.body)
+    const { error} = taskValidationSchema.validate(ctx.request.body)
     if(error) throw new Error(error)
-    const newTask = await TaskModel.create(value)
+
+    const userId = ctx.state.user.id
+    const newTask = await TaskModel.create({...ctx.request.body, user: userId})
+
     ctx.ok(newTask)
   } catch (e) {
     ctx.badRequest({ message: e.message })
@@ -61,9 +69,13 @@ export async function update (ctx) {
     const { error, value } = taskValidationSchema.validate(ctx.request.body)
     if(error) throw new Error(error)
 
-    const updatedTask = await updateTask(ctx.params.id, ctx.request.body)
-
-    ctx.ok(updatedTask)
+    const updatedTask = await updateTask({_id: ctx.params.id, user: ctx.state.user.id}, ctx.request.body)
+    if(updatedTask) 
+    { 
+      ctx.ok(updatedTask)
+    } else {
+      ctx.status = 401
+    }
   } catch (e) {
     ctx.badRequest({ message: e.message })
   }
@@ -72,8 +84,13 @@ export async function update (ctx) {
 export async function destroy (ctx) {
   try {
     if(!ctx.params.id) throw new Error('No id supplied')
-    await TaskModel.findByIdAndDelete(ctx.params.id)
-    ctx.ok('Ressource deleted')
+    const toDestroyTask = await TaskModel.findByIdAndDelete({_id: ctx.params.id, user: ctx.state.user.id})
+    if(toDestroyTask) 
+    { 
+      ctx.ok('Task deleted')
+    } else {
+      ctx.status = 401
+    }
   } catch (e) {
     ctx.badRequest({ message: e.message })
   }
