@@ -4,7 +4,7 @@ import Joi from 'joi'
 
 export async function index (ctx) {
   try {
-    const tasks = await TaskModel.find({})
+    const tasks = await TaskModel.find({user: ctx.state.user.id})
     ctx.ok(tasks)
   } catch (e) {
     ctx.badRequest({ message: e.message })
@@ -30,8 +30,13 @@ export async function id (ctx) {
 export async function getAllByList (ctx) {
   try {
     if(!ctx.params.listId) throw new Error('No id supplied')
-    const tasks = await TaskModel.findByListId(ctx.params.listId)
-    ctx.ok(tasks)
+    const tasks = await TaskModel.findByListId({_id: ctx.params.id, user: ctx.state.user.id})
+    if(tasks) 
+    { 
+      ctx.ok(tasks)
+    } else {
+      ctx.status = 401
+    }
   } catch (e) {
     ctx.badRequest({ message: e.message })
   }

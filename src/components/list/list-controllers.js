@@ -5,7 +5,7 @@ import Joi from 'joi'
 
 export async function index (ctx) {
   try {
-    const lists = await ListModel.find({})
+    const lists = await ListModel.find({user: ctx.state.user.id})
     ctx.ok(lists)
   } catch (e) {
     ctx.badRequest({ message: e.message })
@@ -56,6 +56,7 @@ export async function update (ctx) {
     if(!ctx.params.id) throw new Error('No id supplied')
     const { error, value } = listValidationSchema.validate(ctx.request.body)
     if(error) throw new Error(error)
+
     const updatedList = await ListModel.findByIdAndUpdate({_id: ctx.params.id, user: ctx.state.user.id}, value, { runValidators: true, new: true })
     if(updatedList) 
     { 

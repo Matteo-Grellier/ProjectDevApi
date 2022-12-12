@@ -29,8 +29,8 @@ const taskSchema = new Schema({
 })
 
 taskSchema.static({
-  findByListId (listId) {
-    return this.find({ list: listId })
+  findByListId (infos) {
+    return this.find(infos)
   }
 })
 
