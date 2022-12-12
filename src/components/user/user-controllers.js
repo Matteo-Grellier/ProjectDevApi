@@ -31,23 +31,22 @@ export async function register (ctx) {
   }
 }
 
-// login
 export async function login (ctx) {
   try {
     const loginValidationSchema = Joi.object({
       email: Joi.string().email().required(),
       password: Joi.string().min(6).required()
     })
-    const params = ctx.request.body
-    const { error, value } = loginValidationSchema.validate(params)
+    const parameters = ctx.request.body
+    const { error, value } = loginValidationSchema.validate(parameters)
     if(error) throw new Error(error)
     const user = await UserModel
       .findOne
       ({ email: value.email })
       .select('+password')
-    if(!user) throw new Error('User not found')
+    if(!user) throw new Error('Utilisateur non trouvé')
     const isPasswordValid = await argon2.verify(user.password, value.password)
-    if(!isPasswordValid) throw new Error('Invalid password')
+    if(!isPasswordValid) throw new Error('Mot de passe invalide')
     const token = user.generateJWT()
     ctx.ok({ token })
   } catch(e) {
@@ -55,21 +54,19 @@ export async function login (ctx) {
   }
 }
 
-// get profile of the current logged in user
 export async function profile (ctx) {
   try {
     const user
     = await UserModel
       .findById(ctx.state.user.id)
       .select('-password')
-    if(!user) throw new Error('User not found')
+    if(!user) throw new Error('Utilisateur non trouvé')
     ctx.ok({ user })
   } catch(e) {
     ctx.badRequest({ message: e.message })
   }
 }
 
-// modify user
 export async function modify (ctx) {
   try {
     const modifyValidationSchema = Joi.object({
@@ -77,19 +74,21 @@ export async function modify (ctx) {
       password: Joi.string().min(6).required(),
       terms_and_conditions: Joi.boolean().valid(true).required()
     })
-    const params = ctx.request.body
-    const { error, value } = modifyValidationSchema.validate(params)
+    const parameters = ctx.request.body
+    const { error, value } = modifyValidationSchema.validate(parameters)
     if(error) throw new Error(error)
-    const hashedPassword = await argon2.hash(value.password)
     const user = await UserModel
-      .findByIdAndUpdate(ctx.state.user.id, {
-        ...value,
-        password: hashedPassword,
-        settings: {
-          terms_and_conditions: value.terms_and_conditions
-        }
-      })
-    if(!user) throw new Error('User not found')
+      .findById(ctx.state.user.id)
+      .select('+password')
+    if(!user) throw new Error('Utilisateur non trouvé')
+    const isPasswordValid = await argon2.verify(user.password, value.password)
+    if(!isPasswordValid) throw new Error('Mot de passe invalide')
+    const hashedPassword = await argon2.hash(value.password
+    )
+    user.email = value.email
+    user.password = hashedPassword
+    user.settings.terms_and_conditions = value.terms_and_conditions
+    await user.save()
     ctx.ok({ user })
   } catch(e) {
     ctx.badRequest({ message: e.message })
