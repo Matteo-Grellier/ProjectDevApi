@@ -31,6 +31,13 @@ export async function register (ctx) {
  }
 }
 
+export function profile (ctx) {
+ try {
+  ctx.ok(ctx.state.user)
+ } catch(e) {
+  ctx.badRequest({ message: e.message })
+ }
+}
 
 export async function login (ctx) {
 
