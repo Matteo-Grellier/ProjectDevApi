@@ -1,10 +1,19 @@
 <template>
   <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
+    <div style="">
+      <h1 style="font-weight: bold; color: #613973;"> Ynov Task Manager </h1>
+      <p>Try out this new lightweight tasks manager for everyday tasks</p>
+      <q-btn color="primary" to="/register">
+        Get started
+      </q-btn>
+    </div>
+    <div>
+      <img
+      alt="header image"
+      src="~assets/header-img.png"
+      style="width: 400px; height: 300px"
+      >
+    </div>
   </q-page>
 </template>
 

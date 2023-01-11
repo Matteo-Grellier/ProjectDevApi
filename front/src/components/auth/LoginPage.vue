@@ -1,14 +1,14 @@
 <template>
   <div class="q-pa-xl">
     <div class="flex flex-center column">
-      <h1 class="q-mb-lg" style="font-weight: bold; color: #613973;">Inscrivez vous</h1>
+      <h1 class="q-mb-lg" style="font-weight: bold; color: #613973;">Connectez vous</h1>
       <q-card>
         <q-card-section>
           <q-input label="Email" type="email" outlined class="q-mb-md" v-model="form.email"/>
           <q-input label="Mot de passe" type="password" outlined class="q-mb-md" v-model="form.password" />
           <q-checkbox label="terms and conditions" v-model="form.terms_and_conditions"/>
-          <q-btn label="S'inscrire" class="full-width" color="primary" @click="handleRegister"/>
-          <p>Vous avez déjà un compte ? <a href="/#/login">Connectez vous</a></p>
+          <q-btn label="Se connecter" class="full-width" color="primary" @click="handleRegister"/>
+          <p>Pas encore de compte ? <a href="/#/register">Inscrivez vous</a></p>
         </q-card-section>
       </q-card>
     </div>

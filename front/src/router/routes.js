@@ -13,7 +13,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', name: 'homepage', component: () => import('pages/IndexPage.vue') },
-      { path: 'login', name: 'login', component: () => import('src/components/auth/RegisterPage.vue') },
+      { path: 'login', name: 'login', component: () => import('src/components/auth/LoginPage.vue') },
       { path: 'register', name: 'register', component: () => import('src/components/auth/RegisterPage.vue') },
       { path: 'tuto', name: 'tuto', component: () => import('src/pages/TutoPage.vue') },
       { path: 'tuto/:id', name: 'tuto-params', component: () => import('src/pages/TutoPage.vue') }
