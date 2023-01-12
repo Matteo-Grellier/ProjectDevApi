@@ -43,7 +43,7 @@ userSchema.method({
     this.settings.validation_email_token = token
   },
   generateJWT() {
-    const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
       issuer: process.env.APP_NAME,
       expiresIn: process.env.JWT_EXPIRES_IN
     })

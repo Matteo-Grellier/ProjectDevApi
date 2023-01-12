@@ -1,10 +1,10 @@
 import TaskModel from '#components/task/task-model.js'
 import { updateTask } from '#components/task/task-use-cases.js'
-import Joi from 'Joi'
+import Joi from 'joi'
 
 export async function index (ctx) {
   try {
-    const tasks = await TaskModel.findAllByCreator(ctx.state.user._id)
+    const tasks = await TaskModel.findAllByCreator(ctx.state.user.id)
     ctx.ok(tasks)
   } catch (e) {
     ctx.badRequest({ message: e.message })
@@ -14,7 +14,7 @@ export async function index (ctx) {
 export async function id (ctx) {
   try {
     if(!ctx.params.id) throw new Error('No id supplied')
-    const task = await TaskModel.findOneByCreator(ctx.state.user._id, { _id: ctx.params.id })
+    const task = await TaskModel.findOneByCreator(ctx.state.user.id, { id: ctx.params.id })
     if(!task) { return ctx.notFound() }
     ctx.ok(task)
   } catch (e) {
@@ -42,7 +42,7 @@ export async function create (ctx) {
     })
     const { error, value } = taskValidationSchema.validate(ctx.request.body)
     if(error) throw new Error(error)
-    const newTask = await TaskModel.create({ ...value, user: ctx.state.user._id })
+    const newTask = await TaskModel.create({ ...value, user: ctx.state.user.id })
     ctx.ok(newTask)
   } catch (e) {
     ctx.badRequest({ message: e.message })
@@ -61,7 +61,7 @@ export async function update (ctx) {
     const { error, value } = taskValidationSchema.validate(ctx.request.body)
     if(error) throw new Error(error)
     const updatedTask = await TaskModel.findOneAndUpdate(
-      { _id: ctx.params.id, user: ctx.state.user._id }, // Query parameters
+      { id: ctx.params.id, user: ctx.state.user.id }, // Query parameters
       value, // Params to update
       { runValidators: true, new: true }) // Query options
     if(!updatedTask) return ctx.notFound()
@@ -74,7 +74,7 @@ export async function update (ctx) {
 export async function destroy (ctx) {
   try {
     if(!ctx.params.id) throw new Error('No id supplied')
-    const deletedRessource = await TaskModel.findOneAndDelete({ _id: ctx.params.id, user: ctx.state.user._id })
+    const deletedRessource = await TaskModel.findOneAndDelete({ id: ctx.params.id, user: ctx.state.user.id })
     if(!deletedRessource) throw new Error('Ressource have not been deleted, check your rights')
     ctx.ok('Ressource deleted')
   } catch (e) {
