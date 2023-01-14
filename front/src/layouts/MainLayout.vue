@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated class="bg-white text-black">
       <q-toolbar class="row">
-        <q-btn to="/">
+        <q-btn to="/" class="no-shadow" style="box-shadow: none;">
           <img
           alt="logo"
           src="~assets/logo.png"
