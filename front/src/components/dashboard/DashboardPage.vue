@@ -10,6 +10,13 @@
           Vous n’avez aucune liste créer en une première pour commencer en cliquant sur le bouton +
         </p>
       </div>
+        <ul > //v-for="item in list"
+
+        </ul>
+      <div>
+
+      </div>
+
     </div>
     <div style="width: 80%; padding-left: 10%; padding-top: 5%; padding-right: 20%;">
       <h1 style="color:  #2F0541; font-weight: bold; font-size: 44px;">
@@ -23,5 +30,27 @@
   </div>
 </template>
 
-<script>
+<script setup>
+
+// import { onMounted } from 'vue'
+// import { getAllLists } from 'src/services/lists'
+// import { Notify } from 'quasar'
+
+// const lists = ref([])
+
+// onMounted(async () => {
+//   loading.value = true
+//   const data = await asyncCall()
+
+//   try {
+//     const res = await getAllLists()
+//     console.log(res)
+//     lists.value = res.data
+//   } catch {
+//     Notify.create('Error on lists load')
+//   }
+
+//   fakeData.value = data
+//   loading.value = false
+// })
 </script>

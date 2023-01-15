@@ -1,13 +1,18 @@
 import { defineStore } from 'pinia'
-import { LocalStorage } from 'quasar'
+import { LocalStorage, SessionStorage } from 'quasar'
 import { register, login } from 'src/services/users'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: {}
   }),
-  getters: {},
+  getters: {
+
+  },
   actions: {
+    getJwtToken () {
+      return LocalStorage.getItem('token') || SessionStorage.getItem('token')
+    },
     async handleRegister (params) {
       try {
         const res = await register(params)

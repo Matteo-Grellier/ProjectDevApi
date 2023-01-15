@@ -1,11 +1,11 @@
-// import { LocalStorage, SessionStorage } from 'quasar'
+import { LocalStorage, SessionStorage } from 'quasar'
 
-// const isAuthenticated = async (to, from) => {
-//   const isAuthenticated = LocalStorage.getItem('token') || SessionStorage.getItem('token')
-//   if (!isAuthenticated && to.name !== 'homepage') {
-//     return { name: 'homepage' }
-//   }
-// }
+const isAuthenticated = async (to, from) => {
+  const isAuthenticated = LocalStorage.getItem('token') || SessionStorage.getItem('token')
+  if (!isAuthenticated && to.name !== 'homepage') {
+    return { name: 'homepage' }
+  }
+}
 
 const routes = [
   {
@@ -24,8 +24,8 @@ const routes = [
     component: () => import('layouts/ListLayout.vue'),
     children: [
       { path: '', name: 'dashboard', component: () => import('src/components/dashboard/DashboardPage.vue') }
-    ]//,
-    // beforeEnter: isAuthenticated
+    ],
+    beforeEnter: isAuthenticated
   },
   // Always leave this as last one,
   // but you can also remove it
