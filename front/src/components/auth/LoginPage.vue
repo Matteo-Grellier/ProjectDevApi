@@ -6,8 +6,7 @@
         <q-card-section>
           <q-input label="Email" type="email" outlined class="q-mb-md" v-model="form.email"/>
           <q-input label="Mot de passe" type="password" outlined class="q-mb-md" v-model="form.password" />
-          <q-checkbox label="terms and conditions" v-model="form.terms_and_conditions"/>
-          <q-btn label="Se connecter" class="full-width" color="primary" @click="handleRegister"/>
+          <q-btn label="Se connecter" class="full-width" color="primary" @click="handleLogin"/>
           <p>Pas encore de compte ? <a href="/#/register">Inscrivez vous</a></p>
         </q-card-section>
       </q-card>
@@ -25,13 +24,12 @@ const router = useRouter()
 
 const form = ref({
   email: '',
-  password: '',
-  terms_and_conditions: false
+  password: ''
 })
 
-const handleRegister = () => {
+const handleLogin = () => {
   try {
-    userStore.handleRegister(form.value)
+    userStore.handleLogin(form.value)
     router.push({ name: 'dashboard' })
   } catch (e) {
     Notify.create('Error during register')
