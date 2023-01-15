@@ -20,7 +20,7 @@
     </div>
     <div style="width: 80%; padding-left: 10%; padding-top: 5%; padding-right: 20%;">
       <h1 style="color:  #2F0541; font-weight: bold; font-size: 44px;">
-        Hello, NOM PRENOM 👋
+        Hello, {{userStore.email}} 👋
       </h1>
       <p style="font-size: 20px; margin-top: 5%; margin-bottom: 5%;">
         Tu n’as aucune liste de tâche pour le moment créer en une en cliquant sur le bouton ci-dessous dans le menu pour débuter
@@ -31,26 +31,18 @@
 </template>
 
 <script setup>
+import { useUserStore } from 'src/stores/user-store'
+import { onMounted } from 'vue' // ref
+// import { useListsStore } from 'src/stores/lists-store'
 
-// import { onMounted } from 'vue'
-// import { getAllLists } from 'src/services/lists'
-// import { Notify } from 'quasar'
+const userStore = useUserStore()
+// const listsStore = useListsStore()
 
 // const lists = ref([])
 
-// onMounted(async () => {
-//   loading.value = true
-//   const data = await asyncCall()
+onMounted(async () => {
+  userStore.user = await userStore.getUserProfile()
+  // lists.value = listsStore.listsByAscending()
+})
 
-//   try {
-//     const res = await getAllLists()
-//     console.log(res)
-//     lists.value = res.data
-//   } catch {
-//     Notify.create('Error on lists load')
-//   }
-
-//   fakeData.value = data
-//   loading.value = false
-// })
 </script>
