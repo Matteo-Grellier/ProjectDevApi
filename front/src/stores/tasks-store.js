@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { LocalStorage } from 'quasar'
-import { getTaskId, AddTask, UpdateTask, deleteTask } from 'src/services/tasks'
+import { getTaskId, getOneTask, AddTask, UpdateTask, deleteTask } from 'src/services/tasks'
 
 export const useTasksStore = defineStore('tasks', {
   state: () => ({
@@ -10,6 +10,15 @@ export const useTasksStore = defineStore('tasks', {
     async getTaskId (id) {
       try {
         const res = await getTaskId(id)
+        return res.data
+      } catch (e) {
+        LocalStorage.clear()
+        throw new Error(e)
+      }
+    },
+    async getOneTask (id) {
+      try {
+        const res = await getOneTask(id)
         return res.data
       } catch (e) {
         LocalStorage.clear()

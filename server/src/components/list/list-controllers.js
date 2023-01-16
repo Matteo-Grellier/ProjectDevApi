@@ -15,7 +15,7 @@ export async function index (ctx) {
 export async function id (ctx) {
   try {
     if(!ctx.params.id) throw new Error('No id supplied')
-    const list = await ListModel.findById({ user: ctx.state.user.id, id: ctx.params.id }).lean()
+    const list = await ListModel.findById({ user: ctx.state.user.id, _id: ctx.params.id }).lean()
     if(!list) { return ctx.notFound() }
     list.tasks = await TaskModel.findByListId(ctx.params.id)
     ctx.ok(list)
@@ -61,7 +61,6 @@ export async function destroy (ctx) {
   try {
     if(!ctx.params.id) throw new Error('No id supplied')
     const ressourceDeleted = await ListModel.findOneAndDelete({ _id: ctx.params.id, user: ctx.state.user.id })
-    console.log(ressourceDeleted);
     if(!ressourceDeleted) return ctx.notFound()
     ctx.ok('Ressource deleted')
   } catch (e) {

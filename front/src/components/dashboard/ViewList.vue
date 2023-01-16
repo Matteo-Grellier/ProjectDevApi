@@ -14,8 +14,8 @@
 
     <div style="width: 80%; padding-left: 10%; padding-top: 5%; padding-right: 20%;">
       <div style="display: flex; justify-content: space-between">
-        <h1 style="color:  #2F0541; font-weight: bold; font-size: 44px;">
-          {{route.params.id}}
+        <h1 v-if="theList" style="color:  #2F0541; font-weight: bold; font-size: 44px;">
+          {{ theList.title }}
         </h1>
         <q-btn round class=".btn" label="...">
           <q-menu>
@@ -76,13 +76,14 @@ var text = '';
 var emptyText = '';
 var tasks = ref([]);
 var lists = ref([]);
+var theList = ref('')
 
 onMounted(async () => {
   try {
+    theList.value = await listsStore.getListByID(route.params.id)
     userStore.user = await userStore.getUserProfile()
     listsStore.lists = await listsStore.getAllLists()
     tasksStore.tasks = await tasksStore.getTaskId(route.params.id)
-
   } catch (e) {
     console.error(e);
   }
@@ -116,6 +117,14 @@ const newTask = async (id) => {
 const deleteTask = async (id) => {
   try {
     await tasksStore.deleteTask(id)
+  } catch (error) {
+    Notify.create('Error during deleteTask')
+  }
+}
+
+const editTask = async (id) => {
+  try {
+    router.push({ name: 'edittask', params: { id: id} })
   } catch (error) {
     Notify.create('Error during deleteTask')
   }

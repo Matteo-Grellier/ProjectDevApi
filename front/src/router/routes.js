@@ -28,7 +28,7 @@ const routes = [
       { path: '/editList/:id', name: 'editlist', component: () => import('src/components/dashboard/EditList.vue') },
       { path: '/view/:id', name: 'viewlist', component: () => import('src/components/dashboard/ViewList.vue') },
       { path: 'newTask/:id', name: 'newtask', component: () => import('src/components/dashboard/NewTask.vue') },
-      { path: 'editTask/:id', name: 'edittask', component: () => import('src/components/dashboard/ViewList.vue') }
+      { path: '/editTask/:id', name: 'edittask', component: () => import('src/components/dashboard/EditTask.vue') }
     ],
     beforeEnter: isAuthenticated
   },

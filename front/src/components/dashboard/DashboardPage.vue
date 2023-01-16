@@ -95,7 +95,6 @@ onMounted(async () => {
 
     for (let i = 0; i < listsStore.lists.length; i++) {
       tasks.value.push(await tasksStore.getTaskId(listsStore.lists[i]._id))
-      console.log(listsStore.lists[i]._id);
       lists.value.push({list: listsStore.lists[i], tasks: tasks.value[i]})
     }
 
@@ -106,7 +105,6 @@ onMounted(async () => {
 
 const deleteList = async (id) => {
   try {
-    console.log(id);
     await listsStore.deleteList(id)
   } catch (e) {
     Notify.create('Error during list deletion')
@@ -115,7 +113,6 @@ const deleteList = async (id) => {
 
 const editList = async (id) => {
   try {
-    console.log(id);
     router.push({ name: 'editlist', params: { id: id } })
   } catch (e) {
     Notify.create('Error during list edition')
