@@ -4,7 +4,7 @@ import argon2, { hash } from 'argon2'
 import { sendWelcomeEmail } from '#services/mailing/welcome-email.js'
 
 export async function register (ctx) {
- try {
+  try {
   const registerValidationSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
@@ -26,9 +26,9 @@ export async function register (ctx) {
   await sendWelcomeEmail(user, user.settings.validation_email_token)
   const token = user.generateJWT()
   ctx.ok({ token })
- } catch(e) {
+  } catch(e) {
   ctx.badRequest({ message: e.message })
- }
+  }
 }
 
 

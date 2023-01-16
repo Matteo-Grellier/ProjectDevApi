@@ -7,7 +7,7 @@
           <q-input label="Email" type="email" outlined class="q-mb-md" v-model="form.email"/>
           <q-input label="Mot de passe" type="password" outlined class="q-mb-md" v-model="form.password" />
           <q-btn label="Se connecter" class="full-width" color="primary" @click="handleLogin"/>
-          <p>Pas encore de compte ? <a href="/#/register">Inscrivez vous</a></p>
+          <p>Pas encore de compte ? <a href="/register">Inscrivez vous</a></p>
         </q-card-section>
       </q-card>
     </div>
@@ -15,24 +15,22 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import { useUserStore } from 'stores/user-store'
+import { useUserStore } from '../../stores/user-store'
 import { Notify } from 'quasar'
 import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
 const router = useRouter()
-
 const form = ref({
   email: '',
   password: ''
 })
-
-const handleLogin = () => {
+const handleLogin = async () => {
   try {
-    userStore.handleLogin(form.value)
+    await userStore.handleLogin(form.value)
     router.push({ name: 'dashboard' })
   } catch (e) {
-    Notify.create('Error during register')
+    Notify.create('Error during Login')
   }
 }
 </script>

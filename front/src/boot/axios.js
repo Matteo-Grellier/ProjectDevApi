@@ -1,6 +1,8 @@
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
-
+import { useUserStore } from '../stores/user-store'
+import { Loading } from 'quasar'
+const userStore = useUserStore()
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a
@@ -8,6 +10,28 @@ import axios from 'axios'
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({ baseURL: 'http://localhost:5000/api/v1' })
+
+api.interceptors.request.use(response => {
+  Loading.show()
+  const token = userStore.getJwtToken()
+  response.headers.common.Authorization = `Bearer ${token}`
+  return response
+})
+
+api.interceptors.response.use(
+  response => {
+    Loading.hide()
+    return response
+  },
+  error => {
+    Loading.hide()
+    if (error.response && error.response.status === 401) {
+      return Promise.reject(error)
+    } else {
+      throw error
+    }
+  }
+)
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

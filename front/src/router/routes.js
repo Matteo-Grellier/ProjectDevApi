@@ -23,7 +23,8 @@ const routes = [
     path: '/dashboard',
     component: () => import('layouts/ListLayout.vue'),
     children: [
-      { path: '', name: 'dashboard', component: () => import('src/components/dashboard/DashboardPage.vue') }
+      { path: '', name: 'dashboard', component: () => import('src/components/dashboard/DashboardPage.vue') },
+      { path: 'newList', name: 'newlist', component: () => import('src/components/dashboard/NewList.vue') }
     ],
     beforeEnter: isAuthenticated
   },

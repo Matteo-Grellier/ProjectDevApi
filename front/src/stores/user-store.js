@@ -7,12 +7,13 @@ export const useUserStore = defineStore('user', {
     user: {}
   }),
   getters: {
-
   },
+
   actions: {
     getJwtToken () {
       return LocalStorage.getItem('token') || SessionStorage.getItem('token')
     },
+
     async handleRegister (params) {
       try {
         const res = await register(params)
@@ -33,13 +34,13 @@ export const useUserStore = defineStore('user', {
     },
     async getUserProfile () {
       try {
-        // this.user = userInformations;
         const res = await getUserProfile()
-        return { email: res.data.profile.email, id: res.data.profile._id }
+        return { email: res.data.email, id: res.data._id }
       } catch (e) {
         LocalStorage.clear()
         throw new Error(e)
       }
     }
-  }
-})
+  },
+}
+)
