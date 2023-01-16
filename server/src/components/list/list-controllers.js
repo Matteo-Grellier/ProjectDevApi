@@ -49,7 +49,7 @@ export async function update (ctx) {
     if(!ctx.params.id) throw new Error('No id supplied')
     const { error, value } = listValidationSchema.validate(ctx.request.body)
     if(error) throw new Error(error)
-    const updatedList = await ListModel.findOneAndUpdate({ id: ctx.params.id, user: ctx.state.user.id}, value, { runValidators: true, new: true })
+    const updatedList = await ListModel.findOneAndUpdate({ _id: ctx.params.id, user: ctx.state.user.id}, value, { runValidators: true, new: true })
     if(!updatedList) return ctx.notFound()
     ctx.ok(updatedList)
   } catch (e) {
@@ -60,7 +60,8 @@ export async function update (ctx) {
 export async function destroy (ctx) {
   try {
     if(!ctx.params.id) throw new Error('No id supplied')
-    const ressourceDeleted = await ListModel.findOneAndDelete({ id: ctx.params.id, user: ctx.state.user.id })
+    const ressourceDeleted = await ListModel.findOneAndDelete({ _id: ctx.params.id, user: ctx.state.user.id })
+    console.log(ressourceDeleted);
     if(!ressourceDeleted) return ctx.notFound()
     ctx.ok('Ressource deleted')
   } catch (e) {

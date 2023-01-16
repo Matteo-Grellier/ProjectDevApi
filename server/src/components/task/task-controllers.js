@@ -74,7 +74,7 @@ export async function update (ctx) {
 export async function destroy (ctx) {
   try {
     if(!ctx.params.id) throw new Error('No id supplied')
-    const deletedRessource = await TaskModel.findOneAndDelete({ id: ctx.params.id, user: ctx.state.user.id })
+    const deletedRessource = await TaskModel.findOneAndDelete({ _id: ctx.params.id, user: ctx.state.user.id })
     if(!deletedRessource) throw new Error('Ressource have not been deleted, check your rights')
     ctx.ok('Ressource deleted')
   } catch (e) {

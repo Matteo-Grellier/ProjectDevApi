@@ -24,7 +24,11 @@ const routes = [
     component: () => import('layouts/ListLayout.vue'),
     children: [
       { path: '', name: 'dashboard', component: () => import('src/components/dashboard/DashboardPage.vue') },
-      { path: 'newList', name: 'newlist', component: () => import('src/components/dashboard/NewList.vue') }
+      { path: '/newList', name: 'newlist', component: () => import('src/components/dashboard/NewList.vue') },
+      { path: '/editList/:id', name: 'editlist', component: () => import('src/components/dashboard/EditList.vue') },
+      { path: '/view/:id', name: 'viewlist', component: () => import('src/components/dashboard/ViewList.vue') },
+      { path: 'newTask/:id', name: 'newtask', component: () => import('src/components/dashboard/NewTask.vue') },
+      { path: 'editTask/:id', name: 'edittask', component: () => import('src/components/dashboard/ViewList.vue') }
     ],
     beforeEnter: isAuthenticated
   },
